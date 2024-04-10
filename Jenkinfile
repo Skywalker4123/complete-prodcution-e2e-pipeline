@@ -11,6 +11,16 @@ pipeline{
                 git branch: 'main', url: 'https://github.com/Skywalker4123/complete-prodcution-e2e-pipeline.git'
             }
         }
+        stage ('Build Application') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage ('Test Application') {
+            steps {
+                sh 'mvn test'
+            }
+        }
     }
 
 }
