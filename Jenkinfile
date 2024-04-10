@@ -1,23 +1,16 @@
 pipeline{
     agent any
-
-    tools{
-        jdk 'java17'
-        maven 'maven3'
-    }
-  
-    stages {
-        stage('Workspace Cleaning') {
-            steps {
+    stages{
+        stage(workspace clean) {
+            step {
                 cleanWs()
             }
         }
-    }
-    stages {
-        stage('Git SCM') {
-            steps {
+        stage(git SCM) {
+            step {
                 git branch: 'main', url: 'https://github.com/Skywalker4123/complete-prodcution-e2e-pipeline.git'
             }
         }
-    }        
+    }
+
 }
