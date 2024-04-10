@@ -63,7 +63,7 @@ pipeline{
             steps {
                script {
                    withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
-                        sh "skywalker4123/complete-prodcution-e2e-pipeline:latest"
+                        sh "docker push skywalker4123/complete-prodcution-e2e-pipeline:latest"
                     }   
                 }    
             }
