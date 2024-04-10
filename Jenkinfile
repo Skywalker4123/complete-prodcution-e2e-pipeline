@@ -2,12 +2,12 @@ pipeline{
     agent any
     stages{
         stage ('workspace clean') {
-            step {
+            steps {
                 cleanWs()
             }
         }
         stage ('git SCM') {
-            step {
+            steps {
                 git branch: 'main', url: 'https://github.com/Skywalker4123/complete-prodcution-e2e-pipeline.git'
             }
         }
