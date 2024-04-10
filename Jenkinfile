@@ -1,7 +1,6 @@
 pipeline{
-    agent{
-        label "jenkins-slave"
-    }
+    agent any
+
     tools{
         jdk 'java-17'
         maven 'maven3'
@@ -13,10 +12,7 @@ pipeline{
                 cleanWs()
             }
         }
-        stage('Git SCM') {
-            steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/Skywalker4123/complete-prodcution-e2e-pipeline.git'
-            }
-        }
     }
+    
+        
 }
