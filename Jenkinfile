@@ -5,6 +5,14 @@ pipeline{
         jdk 'java17'
         maven 'maven3'
     }
+        environment {
+        APP_NAME = "complete-prodcution-e2e-pipeline"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "skywalker4123"
+        DOCKER_PASS = 'dockerhub'
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+    }
 
 
     stages{
@@ -44,29 +52,21 @@ pipeline{
                 }       
             }
         }
-        stage ('Build Docker Image') {
+        stage("Build & Push Docker Image") {
             steps {
                 script {
-                    withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
-                        sh "docker build -t skywalker4123/complete-prodcution-e2e-pipeline:latest ."    
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image = docker.build "${IMAGE_NAME}"
                     }
-                }       
+
+                    docker.withRegistry('',DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push('latest')
+                    }
+                }
             }
+
         }
-        stage ('Trivy Image Scan') {
-            steps {
-               sh "trivy image --format table -o trivy-image-report.html skywalker4123/complete-prodcution-e2e-pipeline:latest"
-                    
-            }
-        }
-         stage('Push Docker Image') {
-            steps {
-               script {
-                   withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
-                        sh "docker push skywalker4123/complete-prodcution-e2e-pipeline:latest"
-                    }   
-                }    
-            }
-        }
+
     }
 }
